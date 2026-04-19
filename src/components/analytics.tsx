@@ -5,7 +5,6 @@ import { useConsent } from "@/hooks/use-consent";
 import { useEffect } from "react";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
 declare global {
   interface Window {
@@ -30,7 +29,7 @@ export function Analytics() {
     });
   }, [consent]);
 
-  if (!GA_ID && !ADSENSE_ID) return null;
+  if (!GA_ID) return null;
 
   return (
     <>
@@ -69,14 +68,6 @@ export function Analytics() {
         </>
       )}
 
-      {/* Google AdSense */}
-      {ADSENSE_ID && (
-        <Script
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
-      )}
     </>
   );
 }
