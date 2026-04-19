@@ -5,7 +5,7 @@ import { Analytics } from "@/components/analytics";
 import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
 
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+const ADSENSE_ID = "ca-pub-9681069917942148";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
