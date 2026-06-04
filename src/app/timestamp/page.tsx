@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { TimestampClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/timestamp")!;
 
 export const metadata: Metadata = {
   title: "Unix Timestamp Converter",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function TimestampPage() {
-  return <TimestampClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <TimestampClient />
+    </ToolPageWrapper>
+  );
 }

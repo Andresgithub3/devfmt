@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { CronClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/cron")!;
 
 export const metadata: Metadata = {
   title: "Cron Expression Parser",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function CronPage() {
-  return <CronClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <CronClient />
+    </ToolPageWrapper>
+  );
 }

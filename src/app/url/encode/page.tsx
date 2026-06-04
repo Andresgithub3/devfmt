@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { UrlEncodeClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/url/encode")!;
 
 export const metadata: Metadata = {
   title: "URL Encoder",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function UrlEncodePage() {
-  return <UrlEncodeClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <UrlEncodeClient />
+    </ToolPageWrapper>
+  );
 }

@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { DiffClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/diff")!;
 
 export const metadata: Metadata = {
   title: "Text Diff & Compare",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function DiffPage() {
-  return <DiffClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <DiffClient />
+    </ToolPageWrapper>
+  );
 }

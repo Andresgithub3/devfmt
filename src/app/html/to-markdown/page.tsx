@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { HtmlToMarkdownClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/html/to-markdown")!;
 
 export const metadata: Metadata = {
   title: "HTML to Markdown Converter",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function HtmlToMarkdownPage() {
-  return <HtmlToMarkdownClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <HtmlToMarkdownClient />
+    </ToolPageWrapper>
+  );
 }
