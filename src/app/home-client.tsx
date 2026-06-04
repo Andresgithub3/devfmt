@@ -203,6 +203,52 @@ export function HomeClient({ tools, categories }: HomeClientProps) {
               ))}
             </div>
           )}
+
+          {/* Value / intro content — for visitors and search engines */}
+          <section className="mt-14 border-t border-border pt-8 max-w-3xl text-sm text-muted-foreground leading-relaxed space-y-4">
+            <h2 className="text-base font-semibold text-foreground">
+              Developer tools that respect your data and your time
+            </h2>
+            <p>
+              DevFmt is a free collection of fast, privacy-first formatting and conversion
+              tools for developers, data engineers, and anyone who works with structured data.
+              Format and validate JSON, convert between JSON, CSV, and YAML, encode and decode
+              Base64 and URLs, format SQL, decode JWTs, test regular expressions, generate hashes
+              and UUIDs, and more — all from one clean, keyboard-friendly workspace.
+            </p>
+
+            <h3 className="text-sm font-semibold text-foreground pt-2">Everything runs in your browser</h3>
+            <p>
+              Unlike many online formatters, DevFmt never uploads your data. Every tool processes
+              your input locally using JavaScript — there is no backend that receives, stores, or
+              logs what you paste. That means you can safely format production API responses,
+              configuration files, access tokens, and other sensitive data without it ever leaving
+              your machine. You can verify this yourself in your browser&rsquo;s network tab.
+            </p>
+
+            <h3 className="text-sm font-semibold text-foreground pt-2">Built for speed</h3>
+            <p>
+              No sign-up, no paywalls, and no intrusive pop-ups. Tools load instantly and process
+              input as you type. Paste detection routes your clipboard to the right tool
+              automatically, and keyboard shortcuts keep your hands off the mouse.
+            </p>
+
+            <h3 className="text-sm font-semibold text-foreground pt-2">One toolkit, many formats</h3>
+            <p>
+              DevFmt covers the conversions and transformations developers reach for every day:
+              JSON formatting and minification, JSON, CSV, and YAML conversion, Base64 and URL
+              encoding, HTML entity escaping, Markdown and HTML conversion, SQL beautification,
+              regex testing, hashing, UUID generation, timestamp conversion, color conversion, JWT
+              decoding, and cron expression parsing. New tools are added regularly.
+            </p>
+            <p>
+              Browse the full list above, or read our{" "}
+              <Link href="/guides" className="text-primary hover:text-primary/80 transition-colors">
+                developer guides
+              </Link>{" "}
+              to learn more about each format and when to use each tool.
+            </p>
+          </section>
         </div>
       </main>
 
@@ -213,7 +259,9 @@ export function HomeClient({ tools, categories }: HomeClientProps) {
             happens locally.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground/40">
+            <Link href="/guides" className="hover:text-foreground transition-colors">Guides</Link>
             <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
           </div>

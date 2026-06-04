@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { ColorClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/color")!;
 
 export const metadata: Metadata = {
   title: "Color Converter (Hex / RGB / HSL)",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function ColorPage() {
-  return <ColorClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <ColorClient />
+    </ToolPageWrapper>
+  );
 }

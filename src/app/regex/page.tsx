@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { RegexClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/regex")!;
 
 export const metadata: Metadata = {
   title: "Regex Tester",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function RegexPage() {
-  return <RegexClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <RegexClient />
+    </ToolPageWrapper>
+  );
 }

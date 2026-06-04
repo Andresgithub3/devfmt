@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { UrlDecodeClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/url/decode")!;
 
 export const metadata: Metadata = {
   title: "URL Decoder",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function UrlDecodePage() {
-  return <UrlDecodeClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <UrlDecodeClient />
+    </ToolPageWrapper>
+  );
 }

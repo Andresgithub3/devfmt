@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { JwtDecodeClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/jwt/decode")!;
 
 export const metadata: Metadata = {
   title: "JWT Decoder",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function JwtDecodePage() {
-  return <JwtDecodeClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <JwtDecodeClient />
+    </ToolPageWrapper>
+  );
 }

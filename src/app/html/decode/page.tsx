@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { HtmlDecodeClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/html/decode")!;
 
 export const metadata: Metadata = {
   title: "HTML Entity Decoder",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function HtmlDecodePage() {
-  return <HtmlDecodeClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <HtmlDecodeClient />
+    </ToolPageWrapper>
+  );
 }

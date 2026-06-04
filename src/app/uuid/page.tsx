@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { UuidClient } from "./client";
+import { ToolPageWrapper } from "@/components/tool-page-wrapper";
+import { getToolByHref } from "@/lib/tools";
+
+const tool = getToolByHref("/uuid")!;
 
 export const metadata: Metadata = {
   title: "UUID Generator",
@@ -8,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function UuidPage() {
-  return <UuidClient />;
+  return (
+    <ToolPageWrapper tool={tool}>
+      <UuidClient />
+    </ToolPageWrapper>
+  );
 }
