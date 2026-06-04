@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@/components/analytics";
+import { AdSenseScript } from "@/components/adsense-script";
 import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
 
@@ -46,20 +47,13 @@ export default function RootLayout({
     >
       <head>
         {ADSENSE_ID && (
-          <>
-            <meta name="google-adsense-account" content={ADSENSE_ID} />
-            {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-              crossOrigin="anonymous"
-            />
-          </>
+          <meta name="google-adsense-account" content={ADSENSE_ID} />
         )}
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
         <Analytics />
+        <AdSenseScript />
         <CookieConsent />
       </body>
     </html>
