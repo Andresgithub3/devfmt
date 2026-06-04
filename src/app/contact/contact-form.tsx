@@ -5,7 +5,7 @@ import { useState } from "react";
 // Web3Forms access key. This value is safe to expose in client code — it only
 // routes submissions to the inbox configured at web3forms.com and never reveals
 // the destination email address. Get one free at https://web3forms.com.
-const WEB3FORMS_ACCESS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+const WEB3FORMS_ACCESS_KEY = "ee2b02ee-901f-4a79-aa9d-28582256214e";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
