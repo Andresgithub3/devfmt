@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
-const CONTACT_EMAIL = "hello@devfmt.com";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -28,19 +27,8 @@ export default function ContactPage() {
           <p>
             DevFmt is built and maintained by an independent developer. We read every message and
             genuinely value your input — whether it&rsquo;s a bug report, a feature idea, or a
-            request for a tool that isn&rsquo;t here yet.
-          </p>
-
-          <h3 className="text-sm font-semibold text-foreground pt-2">Email</h3>
-          <p>
-            The best way to reach us is by email at{" "}
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="text-primary hover:text-primary/80 transition-colors"
-            >
-              {CONTACT_EMAIL}
-            </a>
-            . We aim to respond within a few business days.
+            request for a tool that isn&rsquo;t here yet. Use the form below and we&rsquo;ll get
+            back to you.
           </p>
 
           <h3 className="text-sm font-semibold text-foreground pt-2">What to include</h3>
@@ -59,6 +47,9 @@ export default function ContactPage() {
               faster, clearer, or more useful for your workflow.
             </li>
           </ul>
+
+          <h3 className="text-sm font-semibold text-foreground pt-2">Send a message</h3>
+          <ContactForm />
 
           <h3 className="text-sm font-semibold text-foreground pt-2">A note on privacy</h3>
           <p>
