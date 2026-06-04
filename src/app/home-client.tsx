@@ -1,9 +1,61 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Tool } from "@/lib/tools";
 import { Search } from "lucide-react";
+
+function detectFormat(text: string): string | null {
+  const trimmed = text.trim();
+  if (!trimmed) return null;
+
+  // JWT: three dot-separated base64url segments
+  if (/^eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(trimmed)) {
+    return "/jwt/decode";
+  }
+
+  // JSON: starts with { or [
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    try {
+      JSON.parse(trimmed);
+      return "/json/formatter";
+    } catch {
+      // not valid JSON, continue
+    }
+  }
+
+  // SQL keywords
+  if (/^\s*(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|WITH)\b/i.test(trimmed)) {
+    return "/sql/formatter";
+  }
+
+  const lines = trimmed.split("\n");
+
+  // YAML: key: value patterns across multiple lines
+  if (lines.length > 1 && /^[\w][\w\s-]*:(\s|$)/m.test(trimmed) && !trimmed.startsWith("{")) {
+    return "/yaml/to-json";
+  }
+
+  // CSV: consistent delimiters across multiple lines
+  if (lines.length > 1) {
+    const commaCount = (lines[0].match(/,/g) || []).length;
+    const tabCount = (lines[0].match(/\t/g) || []).length;
+    if (commaCount > 0 && lines.slice(0, 3).every((l) => (l.match(/,/g) || []).length === commaCount)) {
+      return "/csv/formatter";
+    }
+    if (tabCount > 0 && lines.slice(0, 3).every((l) => (l.match(/\t/g) || []).length === tabCount)) {
+      return "/csv/formatter";
+    }
+  }
+
+  // Base64: long string of base64 characters
+  if (/^[A-Za-z0-9+/\n\r]+=*$/.test(trimmed) && trimmed.length > 20) {
+    return "/base64/decode";
+  }
+
+  return null;
+}
 
 interface HomeClientProps {
   tools: Tool[];
@@ -14,6 +66,7 @@ export function HomeClient({ tools, categories }: HomeClientProps) {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   // Focus search on / key
   useEffect(() => {
@@ -26,6 +79,26 @@ export function HomeClient({ tools, categories }: HomeClientProps) {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  // Ctrl+V auto-detect: detect pasted format and navigate to tool
+  useEffect(() => {
+    function onPaste(e: ClipboardEvent) {
+      if (document.activeElement === searchRef.current) return;
+      const text = e.clipboardData?.getData("text/plain");
+      if (!text?.trim()) return;
+      const route = detectFormat(text);
+      if (route) {
+        try {
+          sessionStorage.setItem("devfmt-paste", text);
+        } catch {
+          return; // sessionStorage unavailable
+        }
+        router.push(route);
+      }
+    }
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, [router]);
 
   const filtered = useMemo(() => {
     let result = tools;
@@ -142,6 +215,7 @@ export function HomeClient({ tools, categories }: HomeClientProps) {
           <div className="flex items-center gap-4 text-xs text-muted-foreground/40">
             <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
           </div>
         </div>
       </footer>

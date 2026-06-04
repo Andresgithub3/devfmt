@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
   type ChangeEvent,
-  type KeyboardEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
   type UIEvent,
 } from "react";
 import { cn } from "@/lib/utils";
@@ -49,8 +49,20 @@ export function CodeEditor({
   );
 
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Tab" && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+    (e: ReactKeyboardEvent<HTMLTextAreaElement>) => {
+      // Escape: cycle focus between panels
+      if (e.key === "Escape") {
+        const container = textareaRef.current?.closest("[data-tool-layout]");
+        if (!container) return;
+        const textareas = Array.from(container.querySelectorAll("textarea"));
+        const idx = textareas.indexOf(textareaRef.current!);
+        if (idx === -1) return;
+        textareas[(idx + 1) % textareas.length]?.focus();
+        return;
+      }
+
+      // Tab indent (writable editors only)
+      if (!readOnly && e.key === "Tab" && !e.shiftKey && !e.ctrlKey && !e.altKey) {
         e.preventDefault();
         const textarea = e.currentTarget;
         const start = textarea.selectionStart;
@@ -63,7 +75,7 @@ export function CodeEditor({
         });
       }
     },
-    [value, onChange]
+    [value, onChange, readOnly]
   );
 
   const handleScroll = useCallback((e: UIEvent<HTMLTextAreaElement>) => {
@@ -120,6 +132,38 @@ export function CodeEditor({
       lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
     }
   }, [value]);
+
+  // Ctrl+Shift+C / Cmd+Shift+C: copy output (readOnly editors only)
+  useEffect(() => {
+    if (!readOnly) return;
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === "KeyC") {
+        e.preventDefault();
+        if (value) {
+          navigator.clipboard.writeText(value);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        }
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [readOnly, value]);
+
+  // Consume pasted data from homepage auto-detect
+  useEffect(() => {
+    if (readOnly) return;
+    try {
+      const pasteData = sessionStorage.getItem("devfmt-paste");
+      if (pasteData) {
+        sessionStorage.removeItem("devfmt-paste");
+        onChange?.(pasteData);
+      }
+    } catch {
+      // sessionStorage unavailable
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={cn("flex flex-col h-full min-h-0", className)}>
@@ -207,7 +251,7 @@ export function CodeEditor({
           ref={textareaRef}
           value={value}
           onChange={handleChange}
-          onKeyDown={!readOnly ? handleKeyDown : undefined}
+          onKeyDown={handleKeyDown}
           onScroll={handleScroll}
           readOnly={readOnly}
           placeholder={placeholder}

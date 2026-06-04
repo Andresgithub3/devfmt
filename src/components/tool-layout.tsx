@@ -36,7 +36,7 @@ export function ToolLayout({
   actions,
 }: ToolLayoutProps) {
   return (
-    <div className="flex flex-col h-screen max-h-screen">
+    <div className="flex flex-col h-screen max-h-screen" data-tool-layout>
       {/* Top bar */}
       <header className="shrink-0 flex items-center justify-between px-4 py-2 border-b border-border">
         <div className="flex items-center gap-3">
